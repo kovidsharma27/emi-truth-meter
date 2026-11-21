@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Compare offers | EMI Truth Meter{% endblock %}
+{% block bodyclass %}wide{% endblock %}
+{% block content %}
+<a class="back" href="{{ url_for('home') }}">&larr; All offers</a>
+<h1>Compare two offers</h1>
+<p class="lead">Fill in what each shop or bank offered you for the <b>same product</b>.
+Each offer has its own boxes, so one can run for 12 months and the other for 11.
+We show which one costs less in total.</p>
+
+<form method="post" action="{{ url_for('compare') }}">
+  <div class="offers">
+    {% for side, label in (('a', 'Offer A'), ('b', 'Offer B')) %}
+    <section class="offer">
+      <h2><span class="letter">{{ side|upper }}</span>{{ label }}</h2>
+
+      <label class="field">
+        <span>What kind of offer is this?</span>
+        <select name="{{ side }}_mode" class="mode-select" data-side="{{ side }}">
+          {% for k, m in cmodes.items() %}
+          <option value="{{ k }}" {% if sel[side] == k %}selected{% endif %}>{{ m.title }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      {% for k, m in cmodes.items() %}
+      <fieldset class="mode-fields" data-side="{{ side }}" data-mode="{{ k }}"
+                {% if sel[side] != k %}disabled hidden{% endif %}>
+        {% if m.short %}<p class="mode-short">{{ m.short }}</p>{% endif %}
+        <div class="grid2">
+          {% for f in m.fields %}
+            {% if f.kind == 'check' %}
+            <label class="check">
+              <input type="checkbox" name="{{ side }}_{{ f.name }}" {% if values[side][k][f.name] %}checked{% endif %}>
+              {{ f.label }}
+            </label>
+            {% else %}
+            <label class="field">
+              <span>{{ f.label }}</span>
+              <input type="number" step="any" min="0" inputmode="decimal" name="{{ side }}_{{ f.name }}"
+                     value="{{ values[side][k][f.name] }}" placeholder="e.g. {{ f.example }}" required>
+              {% if f.hint %}<small>{{ f.hint }}</small>{% endif %}
+            </label>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </fieldset>
+      {% endfor %}
+    </section>
+    {% endfor %}
+  </div>
+
+  <div class="actions">
+    <button type="submit">Compare these two offers</button>
+    <a class="ghost" href="{{ url_for('compare', example=1) }}">Try an example</a>
+  </div>
+</form>
+
+{% if error %}<p class="error">{{ error }}</p>{% endif %}
+
+{% if results %}
+<section class="result">
+  <p class="label">Result</p>
+  <p class="winner">{{ results.headline }}</p>
+  {% if results.rate_line %}<p class="rate-line">{{ results.rate_line }}</p>{% endif %}
+  {% if results.tenure_note %}<p class="rate-line">{{ results.tenure_note }}</p>{% endif %}
+  <div class="cols">
+    {% for it in results['items'] %}
+    <div class="res {% if it.best %}best{% endif %}">
+      <p class="label">{{ it.name }}: {{ it.title }}</p>
+      <p class="big mid">{{ it.total }}</p>
+      <p class="label">total you pay</p>
+      <table class="stats">
+        {% if it.monthly %}<tr><th>{{ it.monthly[0] }}</th><td>{{ it.monthly[1] }}</td></tr>{% endif %}
+        {% if it.months %}<tr><th>For how long</th><td>{{ it.months }}</td></tr>{% endif %}
+        <tr><th>Extra paid over the base price</th><td>{{ it.extra }}</td></tr>
+        <tr><th>Real yearly rate</th><td>{{ it.rate }}</td></tr>
+        {% if it.view.verdict %}<tr><th>Verdict</th><td>{{ it.view.verdict }}</td></tr>{% endif %}
+      </table>
+    </div>
+    {% endfor %}
+  </div>
+  <p class="note">Total cost is only a fair comparison when both offers are for the same product.
+  Paying cash costs less overall but needs the money today. An EMI spreads the cost over time,
+  and the real yearly rate shows what that convenience costs.</p>
+</section>
+{% endif %}
+{% endblock %}

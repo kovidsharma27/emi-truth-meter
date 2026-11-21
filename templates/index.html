@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+{% if missing %}<p class="error">That page does not exist. Pick an offer below.</p>{% endif %}
+<h1>What is the shop really charging you?</h1>
+<p class="lead">Choose the kind of offer you were given. Type the numbers from it.
+We will show the <b>real yearly interest rate</b> hidden inside.</p>
+
+<a class="card wide" href="{{ url_for('compare') }}">
+  <h2>Compare two offers &rarr;</h2>
+  <p>Put two offers side by side, or an EMI against paying cash, and see which costs less.</p>
+</a>
+
+<div class="grid">
+  {% for key, m in modes.items() %}
+  <a class="card" href="{{ url_for('calc', key=key) }}">
+    <h2>{{ m.title }}</h2>
+    <p>{{ m.short }}</p>
+  </a>
+  {% endfor %}
+</div>
+{% endblock %}

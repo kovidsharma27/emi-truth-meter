@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}EMI Truth Meter{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body class="{% block bodyclass %}{% endblock %}">
+  <header class="top">
+    <div>
+      <a class="brand" href="{{ url_for('home') }}">EMI Truth Meter</a>
+      <span class="tag">Find the real cost behind the offer</span>
+    </div>
+    <nav><a href="{{ url_for('home') }}">Offers</a><a href="{{ url_for('compare') }}">Compare two offers</a></nav>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <footer>
+    Educational estimate based on the numbers you enter. Not financial advice.
+    Real offers can differ by lender, fees and tax rules. Nothing you type is stored.
+  </footer>
+</body>
+</html>
