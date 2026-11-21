@@ -63,7 +63,7 @@ cd emi-truth-meter
 py -m venv .venv
 .venv\Scripts\Activate.ps1
 
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 python app.py
 ```
 
@@ -96,7 +96,7 @@ emi-truth-meter/
 │   ├── index.html          # Home page with the offer cards
 │   ├── calculator.html     # One template used by every offer page
 │   └── compare.html        # Compare two offers
-├── static/
+├── public/
 │   ├── style.css           # Cream, black and dark pink design
 │   └── script.js           # Switches the boxes on the Compare page
 ├── tests/

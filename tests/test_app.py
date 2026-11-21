@@ -190,8 +190,9 @@ def test_compare_page_has_two_offer_cards():
 
 def test_script_is_linked_so_the_offer_menu_works():
     page = client.get("/compare").get_data(as_text=True)
-    assert 'static/script.js' in page and "defer" in page
-    assert client.get("/static/script.js").status_code == 200
+    assert '/script.js' in page and "defer" in page
+    assert client.get("/script.js").status_code == 200
+    assert client.get("/style.css").status_code == 200
 
 def test_personal_loan_fee_in_percent_gives_helpful_error():
     page = client.post("/calc/personal-loan", data={

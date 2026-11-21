@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, abort
 from modes import MODES, COMPARE_MODES
 from modes import inr, pct, months_text
 
-app = Flask(__name__)
+# Vercel serves static files from the "public" folder, so Flask uses the same folder locally.
+app = Flask(__name__, static_folder="public", static_url_path="")
 
 MAX_MONEY = 1_000_000_000      # 100 crore, just a sanity limit
 MAX_MONTHS = 600               # 50 years
