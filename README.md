@@ -6,7 +6,7 @@ A small web app for the public. You type the numbers from an offer, and it shows
 
 Mini project, B.Tech, KCC Institute of Technology and Management (CC 492), 2026.
 
-> Live demo: [add the link here after deployment]
+> Live demo: https://emi-truth-meter.vercel.app/
 
 ---
 
